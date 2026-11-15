@@ -3,7 +3,9 @@
   "compilerOptions": {
     "strict": true,
     "paths": {
-      "phosphor-react-native/src/icons/*": ["./node_modules/phosphor-react-native/lib/typescript/icons/*.d.ts"]
+      "react-native-svg/src/elements/*": [
+        "./node_modules/react-native-svg/lib/typescript/elements/*.d.ts"
+      ]
     }
   }
 }

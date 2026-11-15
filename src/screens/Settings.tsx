@@ -3,6 +3,7 @@ import { Image, Linking, Platform, StyleSheet, Text, View } from 'react-native';
 import { expo } from '../../app.json';
 import { adblockAvailable } from '../privacy/adblock';
 import { learnedTrackers, resetLearnedTrackers } from '../privacy/badger';
+import { fingerprintAvailable, resetFingerprints } from '../privacy/fingerprint';
 import { clearHistorySince, closePrivateTabs, setSettings, useStore, type EngineId, type Settings as Prefs, type ThemeMode } from '../state/store';
 import type { Palette } from '../ui/theme';
 import { ENGINE_ORDER, ENGINES } from '../lib/url';
@@ -70,7 +71,7 @@ export default function Settings({ c, onClose }: Props) {
 function Main({ c, onClose, push }: { c: Palette; onClose: () => void; push: (r: Route) => void }) {
   const s = useStore((st) => st.settings);
   const engine = ENGINES[s.engine];
-  const shields = [s.blockAds, s.learnTrackers, s.blockPopups, s.blockCookies, s.cleanLinks, s.skipRedirects, s.deAmp, s.httpsUpgrade, s.doNotTrack];
+  const shields = [s.blockAds, s.learnTrackers, s.blockFingerprinting, s.blockPopups, s.blockCookies, s.cleanLinks, s.skipRedirects, s.deAmp, s.httpsUpgrade, s.doNotTrack];
   const protections = shields.filter(Boolean).length;
   return (
     <Page c={c} title="App Settings" onClose={onClose}>
@@ -160,7 +161,7 @@ function Screen({
             c={c}
             icon="half"
             title="Darken Websites"
-            sub={`Turn light sites dark when ${APP_NAME} is dark`}
+            sub={`Also force sites with no dark theme of their own dark when ${APP_NAME} is dark`}
             value={s.darkenSites}
             onChange={(v) => set({ darkenSites: v })}
           />
@@ -266,6 +267,14 @@ function PrivacyPage({ c, push, pop }: { c: Palette; push: (r: Route) => void; p
         sub={adblockAvailable ? `Privacy Badger-style learning · ${learned} learned` : `Privacy Badger-style learning${native}`}
         value={s.learnTrackers}
         onChange={(v) => setSettings({ learnTrackers: v })}
+      />
+      <SwitchRow
+        c={c}
+        icon="fingerprint"
+        title="Block Fingerprinting"
+        sub={`Sites see slightly different device details, so they can’t recognise you${native}`}
+        value={s.blockFingerprinting}
+        onChange={(v) => setSettings({ blockFingerprinting: v })}
       />
       <SwitchRow
         c={c}
@@ -383,6 +392,7 @@ function ClearData({ c, pop }: { c: Palette; pop: () => void }) {
       {item('cache', 'Page Cache', 'Saved copies of pages and images', () => web.view?.clearCache?.(true))}
       {privateCount > 0 && item('private', 'Close Private Tabs', `${privateCount} open`, closePrivateTabs)}
       {adblockAvailable && item('trackers', 'Learned Trackers', `Forget the trackers ${APP_NAME} has learned`, resetLearnedTrackers)}
+      {fingerprintAvailable && item('fingerprint', 'Fingerprint Details', 'Give every site new device details', resetFingerprints)}
     </Page>
   );
 }

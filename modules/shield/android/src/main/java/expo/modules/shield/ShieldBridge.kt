@@ -17,4 +17,10 @@ class ShieldBridge(view: WebView) {
 
   @JavascriptInterface
   fun blocked(href: String, items: String): String = AdblockService.blockedIndices(top(href), items)
+
+  @JavascriptInterface
+  fun farble(top: String, frame: String): String = Farble.config(view.get(), top, frame)
+
+  @JavascriptInterface
+  fun noise(top: String, digest: String): String = Farble.noise(top, digest)
 }

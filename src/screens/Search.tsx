@@ -87,7 +87,7 @@ export default function Search({ c: base, initial, editing, privateMode = false,
   };
 
   useEffect(() => {
-    Animated.timing(anim, { toValue: 1, duration: motion.base, easing: motion.enter, useNativeDriver: true }).start();
+    Animated.spring(anim, { toValue: 1, useNativeDriver: true, damping: 24, stiffness: 320, mass: 0.8 }).start();
     const t = setTimeout(() => input.current?.focus(), Platform.OS === 'android' ? 60 : 0);
     const onShow = (e: KeyboardEvent) => setKbTop(e.endCoordinates.screenY);
     const onHide = () => setKbTop(null);
@@ -175,7 +175,7 @@ export default function Search({ c: base, initial, editing, privateMode = false,
           {
             top: insets.top + 6,
             bottom: pillBottom + PILL_H + 10,
-            opacity: anim,
+            opacity: anim.interpolate({ inputRange: [0, 1], outputRange: [0, 1], extrapolate: 'clamp' }),
             transform: [{ translateY: anim.interpolate({ inputRange: [0, 1], outputRange: [-10, 0] }) }],
           },
         ]}
@@ -214,7 +214,7 @@ export default function Search({ c: base, initial, editing, privateMode = false,
           styles.inputRow,
           {
             bottom: pillBottom,
-            opacity: anim,
+            opacity: anim.interpolate({ inputRange: [0, 1], outputRange: [0, 1], extrapolate: 'clamp' }),
             transform: [{ translateY: anim.interpolate({ inputRange: [0, 1], outputRange: [Math.min(80, H * 0.1), 0] }) }],
           },
         ]}

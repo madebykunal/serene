@@ -1,7 +1,8 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { getState, useStore } from '../state/store';
 import { setAdblock, setSiteExceptions } from './adblock';
 import { unwrapAmp } from './amp';
+import { resetPrivateFingerprint, setFingerprinting } from './fingerprint';
 import { setTrackerLearning } from './badger';
 import { cleanUrl } from './clearurls/clearUrls';
 import { upgradeHttps } from './https';
@@ -33,6 +34,9 @@ export function usePrivacySync() {
   const blockAds = useStore((s) => s.settings.blockAds);
   const learnTrackers = useStore((s) => s.settings.learnTrackers);
   const sites = useStore((s) => s.sites);
+  const blockFingerprinting = useStore((s) => s.settings.blockFingerprinting);
+  const hasPrivate = useStore((s) => s.tabs.some((t) => t.private));
+  const hadPrivate = useRef(hasPrivate);
 
   useEffect(() => {
     setAdblock(blockAds);
@@ -45,4 +49,13 @@ export function usePrivacySync() {
   useEffect(() => {
     setSiteExceptions(Object.keys(sites).filter((h) => sites[h].ads === false));
   }, [sites]);
+
+  useEffect(() => {
+    setFingerprinting(blockFingerprinting, Object.keys(sites).filter((h) => sites[h].fingerprint === false));
+  }, [blockFingerprinting, sites]);
+
+  useEffect(() => {
+    if (hadPrivate.current && !hasPrivate) resetPrivateFingerprint();
+    hadPrivate.current = hasPrivate;
+  }, [hasPrivate]);
 }

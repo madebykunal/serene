@@ -37,6 +37,7 @@ export type Settings = {
   deAmp: boolean;
   httpsUpgrade: boolean;
   blockCookies: boolean;
+  blockFingerprinting: boolean;
   textZoom: number;
   darkenSites: boolean;
   theme: ThemeMode;
@@ -55,7 +56,7 @@ type State = {
   sites: Record<string, SiteRule>;
 };
 
-export type SiteRule = { ads?: boolean; darken?: boolean; popups?: boolean; https?: boolean; cookies?: boolean };
+export type SiteRule = { ads?: boolean; darken?: boolean; popups?: boolean; https?: boolean; cookies?: boolean; fingerprint?: boolean };
 
 const HISTORY_CAP = 400;
 const BOOKMARK_CAP = 1000;
@@ -74,6 +75,7 @@ const DEFAULT_SETTINGS: Settings = {
   deAmp: true,
   httpsUpgrade: true,
   blockCookies: true,
+  blockFingerprinting: true,
   textZoom: 100,
   darkenSites: true,
   theme: 'system',

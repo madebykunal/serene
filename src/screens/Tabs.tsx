@@ -266,24 +266,15 @@ function Toggle({
   normalCount: number;
   onPick: (v: boolean) => void;
 }) {
-  const [frames, setFrames] = useState<{ x: number; w: number }[]>([]);
-  const [left] = useState(() => new Animated.Value(0));
-  const [width] = useState(() => new Animated.Value(0));
-  const placed = useRef(false);
+  const [textW, setTextW] = useState([0, 0]);
   const index = priv ? 0 : 1;
+  const [x] = useState(() => new Animated.Value(index));
+  const ready = textW[0] > 0 && textW[1] > 0;
+  const segW = Math.ceil(Math.max(textW[0], textW[1])) + 32;
 
   useEffect(() => {
-    const f = frames[index];
-    if (!f || frames.length < 2) return;
-    if (!placed.current) {
-      placed.current = true;
-      left.setValue(f.x);
-      width.setValue(f.w);
-      return;
-    }
-    const spring = { useNativeDriver: false, damping: 22, stiffness: 320, mass: 0.8 };
-    Animated.parallel([Animated.spring(left, { toValue: f.x, ...spring }), Animated.spring(width, { toValue: f.w, ...spring })]).start();
-  }, [frames, index, left, width]);
+    Animated.spring(x, { toValue: index, useNativeDriver: true, damping: 22, stiffness: 320, mass: 0.8 }).start();
+  }, [index, x]);
 
   const items = [
     { key: true, label: privateCount ? `Private · ${privateCount}` : 'Private' },
@@ -292,26 +283,33 @@ function Toggle({
 
   return (
     <Glass c={c} radius={BAR_H / 2} style={styles.toggle}>
-      {frames.length === 2 && <Animated.View style={[styles.toggleOn, { backgroundColor: c.glassStrong, left, width }]} />}
+      {ready && (
+        <Animated.View
+          style={[
+            styles.toggleOn,
+            { width: segW, backgroundColor: c.glassStrong, transform: [{ translateX: x.interpolate({ inputRange: [0, 1], outputRange: [0, segW] }) }] },
+          ]}
+        />
+      )}
       {items.map((o, i) => {
         const on = priv === o.key;
         return (
           <Pressable
             key={String(o.key)}
             onPress={() => onPick(o.key)}
-            onLayout={(e) => {
-              const { x, width: w } = e.nativeEvent.layout;
-              setFrames((prev) => {
-                const next = prev.slice();
-                next[i] = { x, w };
-                return next;
-              });
-            }}
-            style={styles.toggleItem}
+            style={[styles.toggleItem, ready && { width: segW, paddingHorizontal: 0 }]}
             accessibilityRole="tab"
             accessibilityState={{ selected: on }}
           >
-            <Text style={[styles.toggleText, { color: c.onBg, opacity: on ? 1 : 0.64 }]}>{o.label}</Text>
+            <Text
+              onLayout={(e) => {
+                const w = e.nativeEvent.layout.width;
+                setTextW((prev) => (prev[i] === w ? prev : i ? [prev[0], w] : [w, prev[1]]));
+              }}
+              style={[styles.toggleText, { color: c.onBg, opacity: on ? 1 : 0.64 }]}
+            >
+              {o.label}
+            </Text>
           </Pressable>
         );
       })}
@@ -435,7 +433,7 @@ const styles = StyleSheet.create({
   round: { width: BAR_H, height: BAR_H, borderRadius: BAR_H / 2, alignItems: 'center', justifyContent: 'center' },
   done: { shadowColor: '#000', shadowOpacity: 0.18, shadowRadius: 10, shadowOffset: { width: 0, height: 4 }, elevation: 4 },
   toggle: { flexDirection: 'row', height: BAR_H, padding: 4 },
-  toggleOn: { position: 'absolute', top: 4, bottom: 4, borderRadius: (BAR_H - 8) / 2 },
+  toggleOn: { position: 'absolute', top: 4, bottom: 4, left: 4, borderRadius: (BAR_H - 8) / 2 },
   toggleItem: { height: BAR_H - 8, borderRadius: (BAR_H - 8) / 2, paddingHorizontal: 16, alignItems: 'center', justifyContent: 'center' },
   toggleText: { ...type.label, fontSize: 14, fontVariant: ['tabular-nums'] },
 });
