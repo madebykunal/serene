@@ -1,0 +1,3 @@
+-keep class expo.modules.shield.AdblockNative { *; }
+-keep class com.reactnativecommunity.webview.RNCWebViewClient { public static *** requestHook; public static *** viewHook; }
+-keepclassmembers class expo.modules.shield.ShieldBridge { @android.webkit.JavascriptInterface <methods>; }

@@ -1,0 +1,37 @@
+! Title: Serene additions
+! Mobile YouTube player ads (uBlock's player rules target www only)
+m.youtube.com,music.youtube.com,www.youtube.com,youtube.com##+js(set, ytInitialPlayerResponse.adPlacements, undefined)
+m.youtube.com,music.youtube.com,www.youtube.com,youtube.com##+js(set, ytInitialPlayerResponse.adSlots, undefined)
+m.youtube.com,music.youtube.com,www.youtube.com,youtube.com##+js(set, ytInitialPlayerResponse.playerAds, undefined)
+m.youtube.com,music.youtube.com##+js(json-prune-fetch-response, adPlacements adSlots playerAds playerResponse.adPlacements playerResponse.adSlots playerResponse.playerAds [].playerResponse.adPlacements [].playerResponse.adSlots [].playerResponse.playerAds, , propsToMatch, /\/player(\?|$)|\/next(\?|$)|get_watch|reel_watch/)
+m.youtube.com,music.youtube.com##+js(json-prune-xhr-response, adPlacements adSlots playerAds playerResponse.adPlacements playerResponse.adSlots playerResponse.playerAds [].playerResponse.adPlacements [].playerResponse.adSlots [].playerResponse.playerAds, , propsToMatch, /\/player(\?|$)|\/next(\?|$)|get_watch|reel_watch/)
+m.youtube.com,music.youtube.com,www.youtube.com##+js(serene-ad-skip)
+m.youtube.com##ytm-promoted-sparkles-web-renderer
+m.youtube.com##ytm-promoted-sparkles-text-search-renderer
+m.youtube.com##ytm-companion-ad-renderer
+m.youtube.com##ytm-promoted-video-renderer
+m.youtube.com##ad-slot-renderer
+m.youtube.com##ytm-ad-slot-renderer
+m.youtube.com##ytm-rich-item-renderer:has(ad-slot-renderer)
+m.youtube.com##ytm-item-section-renderer:has(> lazy-list > ad-slot-renderer:only-child)
+m.youtube.com##ytm-paid-content-overlay-renderer
+m.youtube.com##ytm-mealbar-promo-renderer
+m.youtube.com##ytm-statement-banner-renderer
+m.youtube.com##ytm-brand-video-singleton-renderer
+m.youtube.com##.ytm-companion-slot
+m.youtube.com###player-ads
+youtube.com##.video-ads.ytp-ad-module
+! Google One Tap and sign-in prompts
+||accounts.google.com/gsi/iframe/select$subdocument
+##iframe[src*="accounts.google.com/gsi/iframe/select"]
+###credential_picker_container
+###credential_picker_iframe
+###g_id_onload
+##div[id^="credential_picker"]
+! Common consent managers that leave an overlay or a locked page
+##.fc-consent-root
+##.qc-cmp2-container
+##div[id^="sp_message_container_"]
+##.sp-message-open > body:style(overflow: auto !important)
+##body.didomi-popup-open:style(overflow: auto !important)
+##html.sp-message-open:style(overflow: auto !important)
