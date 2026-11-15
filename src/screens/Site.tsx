@@ -20,6 +20,16 @@ function SiteToggles({ c, host }: { c: Palette; host: string }) {
         value={rule?.ads !== false}
         onChange={(v) => setSiteRule(host, { ads: v })}
       />
+      {Platform.OS === 'android' && (
+        <SwitchRow
+          c={c}
+          icon="fingerprint"
+          title="Block Fingerprinting"
+          sub="Turn off if this site won’t load, sign in or check out"
+          value={rule?.fingerprint !== false}
+          onChange={(v) => setSiteRule(host, { fingerprint: v })}
+        />
+      )}
       <SwitchRow
         c={c}
         icon="half"
@@ -99,7 +109,7 @@ export function SitesPage({ c, onClose, onOpen }: { c: Palette; onClose: () => v
   const hosts = Object.keys(sites).sort();
   const describe = (host: string) => {
     const r = sites[host];
-    const off = [r.ads === false && 'ad blocking', r.darken === false && 'dark mode', r.popups === false && 'pop-up hiding'].filter(Boolean);
+    const off = [r.ads === false && 'ad blocking', r.fingerprint === false && 'fingerprint blocking', r.darken === false && 'dark mode', r.popups === false && 'pop-up hiding'].filter(Boolean);
     return off.length ? `Off: ${off.join(', ')}` : 'Custom';
   };
   return (

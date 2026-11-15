@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState, type ComponentRef } from 'react';
-import { Animated, Dimensions, Easing, Keyboard, Linking, PanResponder, PixelRatio, Platform, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Animated, Appearance, Dimensions, Easing, Keyboard, Linking, PanResponder, PixelRatio, Platform, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { WebView, type WebViewMessageEvent, type WebViewNavigation } from 'react-native-webview';
 import type { ShouldStartLoadRequest } from 'react-native-webview/lib/WebViewTypes';
 import { captureRef } from 'react-native-view-shot';
-import { themeScript } from '../../inject/darkMode';
+import { themeHeaders, themeScript } from '../../inject/darkMode';
 import { DECLUTTER } from '../../inject/declutter';
 import { DESKTOP_VIEWPORT, findScript, guard, LONG_PRESS, PAGE_INFO, PULL_TO_REFRESH, textSizeScript } from '../../inject/pageScripts';
 import { cardWidth } from '../../lib/tabs';
@@ -12,6 +12,7 @@ import { intentFallback, prettyHost, searchUrl } from '../../lib/url';
 import { cleanNavigation, tidyUrl } from '../../privacy';
 import { AMP_SCRIPT, leaveAmp } from '../../privacy/amp';
 import { allowHttp, upgradeHttps, wasUpgraded } from '../../privacy/https';
+import { setPrivateBrowsing } from '../../privacy/fingerprint';
 import { GPC_SCRIPT, withPrivacyHeaders } from '../../privacy/gpc';
 import { addVisit, getState, hostKey, saveThumb, setChromeVersion, setVisitIcon, updateTab, useStore, type Tab } from '../../state/store';
 import Icon from '../../ui/Icon';
@@ -41,6 +42,12 @@ const BAR_SEE = 0.26;
 const EDGE = 14;
 let captureTimer: ReturnType<typeof setTimeout> | undefined;
 
+function pageSource(url: string) {
+  const s = withPrivacyHeaders(url);
+  const t = themeHeaders(url, Appearance.getColorScheme() === 'dark');
+  return t ? { uri: s.uri, headers: { ...s.headers, ...t } } : s;
+}
+
 export default function Browser({ c, tab, covered, onGrid, onSearch, onMenu, onEdit, onNewTab, onTone, onLinkMenu }: Props) {
   const insets = useSafeAreaInsets();
   const hideOnScroll = useStore((s) => s.settings.hideToolbar);
@@ -55,6 +62,7 @@ export default function Browser({ c, tab, covered, onGrid, onSearch, onMenu, onE
   const blockCookies = useStore((s) => s.settings.blockCookies) && sites[hostKey(tab.url)]?.cookies !== false;
   const popupsOff = Object.keys(sites).filter((h) => sites[h].popups === false);
   const isPrivate = !!tab.private;
+  setPrivateBrowsing(isPrivate);
   const desktop = !!tab.desktop;
   const userAgent = desktop ? desktopUserAgent(chrome) : Platform.OS === 'android' ? androidUserAgent(chrome) : undefined;
   const [finding, setFinding] = useState(false);
@@ -68,7 +76,7 @@ export default function Browser({ c, tab, covered, onGrid, onSearch, onMenu, onE
   const ref = useRef<ComponentRef<typeof WebView>>(null);
   const shot = useRef<ComponentRef<typeof View>>(null);
   const frame = useRef({ x: 0, y: 0, w: 0, h: 0 });
-  const [source, setSource] = useState(() => withPrivacyHeaders(upgradeHttps(tab.url)));
+  const [source, setSource] = useState(() => pageSource(upgradeHttps(tab.url)));
   const [crashKey, setCrashKey] = useState(0);
   const [topColor, setTopColor] = useState(c.dark ? c.bg : '#FFFFFF');
   const [failedUrl, setFailedUrl] = useState<string | null>(null);
@@ -118,7 +126,7 @@ export default function Browser({ c, tab, covered, onGrid, onSearch, onMenu, onE
         ref.current?.injectJavaScript(`location.href=${JSON.stringify(url)};true;`);
         return prev;
       }
-      return withPrivacyHeaders(url);
+      return pageSource(url);
     });
   };
 

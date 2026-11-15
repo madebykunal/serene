@@ -42,6 +42,7 @@ object AdblockService {
   fun start(context: Context) {
     if (!started.compareAndSet(false, true)) return
     val app = context.applicationContext
+    Farble.start(app)
     installHooks(app)
     Badger.start(app)
     Thread({ load(app) }, "shield").apply {
@@ -135,7 +136,8 @@ object AdblockService {
   private fun contentScript(context: Context): String? {
     content?.let { return it }
     return try {
-      context.assets.open("shield/content.js").bufferedReader().use { it.readText() }
+      val read = { name: String -> context.assets.open(name).bufferedReader().use { it.readText() } }
+      (read("shield/farble.js") + "\n" + read("shield/content.js"))
         .replace("__BRIDGE__", bridgeName)
         .also { content = it }
     } catch (_: Throwable) {

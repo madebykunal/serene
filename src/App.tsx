@@ -84,8 +84,8 @@ function Root() {
   const showPage = () => setView('page');
 
   const openGrid = () => {
-    web.capture();
     setView('tabs');
+    setTimeout(() => web.capture(), 380);
   };
 
   const openId = (id: string) => {

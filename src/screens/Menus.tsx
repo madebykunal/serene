@@ -229,7 +229,7 @@ export function LinkMenu({ c, info, privateContext, onClose, onOpen }: LinkMenuP
   };
 
   useEffect(() => {
-    Animated.timing(anim, { toValue: 1, duration: motion.base, easing: motion.enter, useNativeDriver: true }).start();
+    Animated.spring(anim, { toValue: 1, useNativeDriver: true, damping: 22, stiffness: 340, mass: 0.8 }).start();
     const sub = BackHandler.addEventListener('hardwareBackPress', () => {
       dismiss();
       return true;
@@ -239,7 +239,7 @@ export function LinkMenu({ c, info, privateContext, onClose, onOpen }: LinkMenuP
 
   return (
     <View style={StyleSheet.absoluteFill}>
-      <Animated.View style={[StyleSheet.absoluteFill, { backgroundColor: c.scrim, opacity: anim.interpolate({ inputRange: [0, 1], outputRange: [0, 0.7] }) }]}>
+      <Animated.View style={[StyleSheet.absoluteFill, { backgroundColor: c.scrim, opacity: anim.interpolate({ inputRange: [0, 1], outputRange: [0, 0.7], extrapolate: 'clamp' }) }]}>
         <Pressable style={StyleSheet.absoluteFill} onPress={() => dismiss()} accessibilityLabel="Close menu" />
       </Animated.View>
       <Animated.View
@@ -250,7 +250,7 @@ export function LinkMenu({ c, info, privateContext, onClose, onOpen }: LinkMenuP
             left,
             top,
             width: menuW,
-            opacity: anim,
+            opacity: anim.interpolate({ inputRange: [0, 1], outputRange: [0, 1], extrapolate: 'clamp' }),
             transform: [
               { translateY: originY },
               { scale: anim.interpolate({ inputRange: [0, 1], outputRange: [0.86, 1] }) },

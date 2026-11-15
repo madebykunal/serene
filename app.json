@@ -1,6 +1,6 @@
 {
   "expo": {
-    "version": "1.0.0",
+    "version": "1.5.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
@@ -17,6 +17,7 @@
       }
     },
     "android": {
+      "versionCode": 10500,
       "adaptiveIcon": {
         "backgroundColor": "#023B49",
         "foregroundImage": "./assets/android-icon-foreground.png",
@@ -64,8 +65,8 @@
             ],
             "enableMinifyInReleaseBuilds": true,
             "enableShrinkResourcesInReleaseBuilds": true,
-            "enableBundleCompression": true,
-            "useLegacyPackaging": true
+            "enableBundleCompression": false,
+            "useLegacyPackaging": false
           }
         }
       ],

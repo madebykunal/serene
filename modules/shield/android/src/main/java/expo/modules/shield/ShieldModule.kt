@@ -43,5 +43,22 @@ class ShieldModule : Module() {
     Function("setSiteExceptions") { hosts: List<String> ->
       AdblockService.exempt = hosts.map { it.lowercase() }.toSet()
     }
+
+    Function("setFingerprinting") { on: Boolean, hosts: List<String> ->
+      Farble.enabled = on
+      Farble.exempt = hosts.map { it.lowercase().removePrefix("www.") }.toSet()
+    }
+
+    Function("setPrivate") { on: Boolean ->
+      Farble.private = on
+    }
+
+    Function("resetPrivateFingerprint") {
+      Farble.resetPrivate()
+    }
+
+    Function("resetFingerprint") {
+      Farble.reset()
+    }
   }
 }

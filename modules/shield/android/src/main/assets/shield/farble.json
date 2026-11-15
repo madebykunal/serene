@@ -1,0 +1,54 @@
+{
+  "standard": [
+    "google.*", "amazon.*", "paypal.com", "stripe.com", "wise.com", "revolut.com", "coinbase.com", "binance.com", "kraken.com",
+    "wazirx.com", "coindcx.com", "bank.in", "fin.in", "onlinesbi.sbi", "sbi.co.in", "hdfcbank.com", "icicibank.com", "axisbank.com",
+    "kotak.com", "yesbank.in", "idfcfirstbank.com", "indusind.com", "pnbindia.in", "bankofbaroda.in", "canarabank.com",
+    "unionbankofindia.co.in", "federalbank.co.in", "aubank.in", "rblbank.com", "paytm.com", "paytm.in", "phonepe.com",
+    "razorpay.com", "payu.in", "cashfree.com", "juspay.in", "billdesk.com", "ccavenue.com", "zerodha.com", "groww.in",
+    "upstox.com", "angelone.in", "irctc.co.in", "bookmyshow.com", "goindigo.in", "airindia.com",
+    "adidas.com", "adidas.co.uk", "amtrak.com", "att.com", "bloomingdales.com", "capitalone.com", "centerwellpharmacy.com",
+    "chase.com", "citi.com", "emirates.com", "fedex.com", "finishline.com", "go365.com", "gynzykids.com", "hm.com",
+    "humana.com", "ikea.com", "usps.gov", "manulife.ca", "match.com", "navyfederal.org", "nordstrom.com",
+    "northernrailway.co.uk", "online-calculator.com", "online-stopwatch.com", "spirit.com", "suncoastcreditunion.com",
+    "td.com", "thetrainline.com", "usps.com", "walgreens.com", "wellsfargo.com", "xfinity.com", "godaddy.com",
+    "bankofamerica.com", "marvel.com", "noaprints.com", "ticketmaster.com", "gamestop.com", "realestate.com.au",
+    "secureserver.net", "proton.me", "target.com", "tracfone.com", "tattoogenius.art", "britishairways.com", "ba.com",
+    "hanes.com", "homedepot.com"
+  ],
+  "frames": [
+    "hcaptcha.com", "challenges.cloudflare.com", "recaptcha.net", "google.com", "arkoselabs.com", "funcaptcha.com",
+    "geetest.com", "captcha-delivery.com", "datadome.co", "px-cdn.net", "px-cloud.net", "perimeterx.net",
+    "friendlycaptcha.com", "frcapi.com", "mtcaptcha.com", "awswaf.com", "stripe.com", "stripe.network", "paypal.com",
+    "paypalobjects.com", "braintreegateway.com", "braintree-api.com", "adyen.com", "checkout.com", "cardinalcommerce.com",
+    "razorpay.com", "cashfree.com", "payu.in", "juspay.in", "billdesk.com", "ccavenue.com", "wibmo.com", "enstage-sas.com"
+  ],
+  "graphics": [
+    "figma.com", "canva.com", "photopea.com", "excalidraw.com", "tldraw.com", "miro.com", "lucid.app", "lucidchart.com",
+    "sketchfab.com", "shadertoy.com", "mapbox.com", "openstreetmap.org", "here.com", "waze.com", "bing.com", "maps.apple.com",
+    "geoguessr.com", "poki.com", "crazygames.com", "itch.io", "itch.zone", "krunker.io", "desmos.com", "geogebra.org",
+    "adobe.com", "pixlr.com", "squoosh.app", "remove.bg", "kittl.com", "zoom.us", "teams.microsoft.com", "teams.live.com",
+    "discord.com", "web.whatsapp.com", "chess.com", "lichess.org", "playcanvas.com", "babylonjs.com", "threejs.org",
+    "maps.gsi.go.jp", "athenacrisis.com", "vizzy.io"
+  ],
+  "off": {
+    "canvas": [
+      "google.*", "wpt.fyi", "maps.gsi.go.jp", "harkins.com", "nperf.com", "athenacrisis.com", "adidas.com", "adidas.co.uk",
+      "amtrak.com", "att.com", "bloomingdales.com", "capitalone.com", "centerwellpharmacy.com", "chase.com", "citi.com",
+      "emirates.com", "fedex.com", "finishline.com", "go365.com", "gynzykids.com", "hm.com", "humana.com", "ikea.com",
+      "litebluesso.usps.gov", "manulife.ca", "match.com", "navyfederal.org", "nordstrom.com", "northernrailway.co.uk",
+      "online-calculator.com", "online-stopwatch.com", "spirit.com", "suncoastcreditunion.com", "td.com", "thetrainline.com",
+      "usps.com", "walgreens.com", "wellsfargo.com", "xfinity.com", "godaddy.com", "bankofamerica.com", "marvel.com",
+      "noaprints.com", "coinbase.com"
+    ],
+    "webgl": ["google.*", "bing.com", "ospfranco.com"],
+    "screen": [
+      "google.*", "usps.com", "youtube.com", "fedex.com", "gamestop.com", "godaddy.com", "secureserver.net",
+      "litebluesso.usps.gov", "marvel.com", "noaprints.com", "tracfone.com", "coinbase.com"
+    ],
+    "language": ["britishairways.com", "ba.com", "hanes.com", "homedepot.com"],
+    "audio": ["vizzy.io", "litebluesso.usps.gov", "marvel.com", "noaprints.com"],
+    "hardware": ["web.whatsapp.com"],
+    "storage": ["tattoogenius.art", "fedex.com", "litebluesso.usps.gov", "marvel.com", "noaprints.com", "ticketmaster.com", "coinbase.com"],
+    "battery": ["litebluesso.usps.gov", "marvel.com", "noaprints.com", "coinbase.com"]
+  }
+}
